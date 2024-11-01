@@ -1,0 +1,13 @@
+gfcli:
+  docker:
+    build: "-a amd64 -s linux -p temp -ew"
+    tagPrefixes:
+      - my.image.pub/my-app
+
+  # dao生成
+  gen:
+    dao:
+      - link:            "mysql:zxb:nissan123@tcp(1.92.75.225:3306)/mgpanel?charset=utf8mb4&parseTime=True&loc=Local"
+        removePrefix:    "gf_"
+        descriptionTag:  true
+        noModelComment:  true
