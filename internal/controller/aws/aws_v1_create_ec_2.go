@@ -20,9 +20,13 @@ func (c *ControllerV1) CreateEc2(ctx context.Context, req *v1.CreateEc2Req) (res
 	// 记录请求中的参数
 	glog.New().Info(ctx, "AmiID:", req.AmiID)
 
-	// 示例：可以从请求中获取其它信息
-	paramValue := r.GetQuery("someParam") // 获取 URL 查询参数 `someParam`
+	// 获取 URL 查询参数 `someParam`
+	paramValue := r.GetQuery("someParam")
 	glog.New().Info(ctx, "someParam:", paramValue)
 
-	return nil, gerror.NewCode(gcode.CodeNotImplemented)
+	// 写入 JSON 响应并直接 return
+	r.Response.WriteJson(g.Map{
+		"message": "paramValueparamValueparamValueparamValue",
+	})
+	return // 不再返回任何内容
 }
