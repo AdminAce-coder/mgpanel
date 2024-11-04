@@ -7,7 +7,7 @@ include ./hack/hack-cli.mk
 up: cli.install
 	@gf up -a
 
-# Build binary using configuration from hack/config.yaml.
+# Build binary using configuration from hack/config.ec2workspace.
 .PHONY: build
 build: cli.install
 	@gf build -ew
@@ -51,7 +51,7 @@ image.push: cli.install
 	@make image PUSH=-p;
 
 
-# Deploy image and yaml to current kubectl environment.
+# Deploy image and ec2workspace to current kubectl environment.
 .PHONY: deploy
 deploy: cli.install
 	$(eval _TAG = $(if ${TAG},  ${TAG}, develop))

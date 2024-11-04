@@ -1,12 +1,12 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
+apiVersion: kustomize.config.k3s.io/v1beta1
 kind: Kustomization
 
 resources:
 - ../../base
-- configmap.yaml
+- configmap.ec2workspace
 
 patchesStrategicMerge:
-- deployment.yaml
+- deployment.ec2workspace
 
 namespace: default
 

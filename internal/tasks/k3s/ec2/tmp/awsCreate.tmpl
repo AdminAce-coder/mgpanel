@@ -1,0 +1,52 @@
+provider "aws" {
+  alias      = "create"
+  region = "{{ .Region }}"  # 使用 Go 模板渲染区域
+  access_key = "{{ .AwsAccessesCg.AccessedId }}"
+  secret_key = "{{ .AwsAccessesCg.SecretKey }}"
+}
+
+data "aws_vpc" "selected" {
+  filter {
+    name   = "vpc-id"
+    values = ["{{ .Vpc.Vpcid }}"]  # 使用 Go 模板渲染 VPC ID
+  }
+}
+
+data "aws_subnet" "selected" {
+  filter {
+    name   = "subnet-id"
+    values = ["{{ .Vpc.SubnetID }}"]  # 使用 Go 模板渲染子网 ID
+  }
+  vpc_id = data.aws_vpc.selected.id
+}
+
+data "aws_security_group" "selected" {
+  filter {
+    name   = "group-id"
+    values = ["{{ .Vpc.Sg.SecurityGroupID }}"]  # 使用 Go 模板渲染安全组 ID
+  }
+}
+
+resource "aws_instance" "web_server" {
+  ami           = "{{ .Instance.AmiID }}"  # 使用 Go 模板渲染 AMI ID
+  instance_type = "{{ .Instance.InstanceType }}"  # 使用 Go 模板渲染实例类型
+
+  key_name = "{{ .Vpc.Sg.KeyName }}"  # 使用 Go 模板渲染密钥名称
+
+  subnet_id = data.aws_subnet.selected.id
+
+  vpc_security_group_ids = [data.aws_security_group.selected.id]
+
+  root_block_device {
+    volume_size = {{  .Instance.VolumeSize }}
+    volume_type = "{{ .Instance.VolumeType }}"
+  }
+
+  tags = {
+    Name = "{{ .Instance.InstanceName }}"
+  }
+}
+
+output "instance_id" {
+  value = aws_instance.web_server.id
+}

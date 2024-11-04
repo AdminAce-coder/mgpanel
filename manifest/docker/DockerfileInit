@@ -1,0 +1,16 @@
+# 初始化terraform 容器
+# Use your base Terraform image
+FROM registry.cn-chengdu.aliyuncs.com/aliyunzzzxb/hashicorp:latest
+
+# Set the working directory
+WORKDIR /app
+
+# Copy your .terraformrc file into the image
+COPY .terraformrc .
+COPY mainInit.tf .
+# Set the environment variable for Terraform CLI config file
+ENV TF_CLI_CONFIG_FILE=/app/.terraformrc
+
+# Run terraform init during the build process
+RUN terraform init
+
