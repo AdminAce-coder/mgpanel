@@ -1,6 +1,8 @@
 package main
 
 import (
+	_ "mgpanel/internal/logic"
+
 	"mgpanel/internal/cmd"
 	_ "mgpanel/internal/packed"
 

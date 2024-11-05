@@ -71,13 +71,13 @@ type AwsAccessesCg struct {
 
 type operation interface {
 	TemplateGeneration(aws *AwsEc2Config) error
-	CreateEC2() error
+	CreateEC2(aws *AwsEc2Config) error
 }
 
 func newAwsAccess() *AwsAccessesCg {
 	var ctx = gctx.New()
-	acessid, _ := g.Cfg(Configpath).Get(ctx, "aws.acessId")
-	accessKey, _ := g.Cfg(Configpath).Get(ctx, "aws.accessKey")
+	acessid, _ := g.Cfg().Get(ctx, "aws.acessId")
+	accessKey, _ := g.Cfg().Get(ctx, "aws.accessKey")
 	fmt.Printf("id:%s,\n", acessid.Strings())
 	fmt.Printf("accessKey:%s,\n", accessKey.Strings())
 	return &AwsAccessesCg{

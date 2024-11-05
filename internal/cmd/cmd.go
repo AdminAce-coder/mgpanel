@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"mgpanel/internal/controller/aws"
-	"mgpanel/internal/controller/hello"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
@@ -22,7 +21,6 @@ var (
 					ghttp.MiddlewareHandlerResponse,
 					ghttp.MiddlewareCORS)
 				group.Bind(
-					hello.NewV1(),
 					aws.NewV1(),
 				)
 			})

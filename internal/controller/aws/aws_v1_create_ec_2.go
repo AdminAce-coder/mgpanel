@@ -19,19 +19,35 @@ func (c *ControllerV1) CreateEc2(ctx context.Context, req *v1.CreateEc2Req) (res
 	}
 
 	// 创建一个 config 结构体实例
-	var config ec2.Config
-
-	// 将请求中的 JSON 数据解析到 config 中
-	if err := r.Parse(&config); err != nil {
-		return nil, gerror.WrapCode(gcode.CodeInvalidParameter, err, "请求参数解析失败")
+	var config = ec2.AwsEc2Config{
+		Operation: &ec2.AwsEc2Create{},
 	}
 
+	newconfig := ec2.NewAwsEc2Config(config.Operation)
+	// 将请求中的 JSON 数据解析到 config 中
+	if err := r.Parse(&newconfig); err != nil {
+		return nil, gerror.WrapCode(gcode.CodeInvalidParameter, err, "请求参数解析失败")
+	}
 	// 记录解析后的参数内容
-	glog.New().Info(ctx, "Parsed Config:", config)
-	glog.New().Info(ctx, "terrform模板生成成功")
+	glog.New().Info(ctx, "解析后的Config:", newconfig)
+	////创建EC2
+	if err := config.Operation.CreateEC2(newconfig); err != nil {
+		glog.New().Error(ctx, "实例创建失败:", err)
+		r.Response.WriteJson(g.Map{
+			"message": "EC2创建失败",
+		})
+	}
+	//渲染模板
+	//err = config.Operation.TemplateGeneration(newconfig)
+	//if err != nil {
+	//	r.Response.WriteJson(g.Map{
+	//		"message": "渲染失败",
+	//	})
+	//}
+	//glog.New().Info(ctx, "terrform模板生成成功")
 	// 执行其他逻辑，处理配置后的内容
 	r.Response.WriteJson(g.Map{
-		"message": "terrform模板生成成功",
+		"message": "EC2创建成功",
 	})
 
 	return

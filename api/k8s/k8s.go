@@ -2,14 +2,14 @@
 // Code generated and maintained by GoFrame CLI tool. DO NOT EDIT.
 // =================================================================================
 
-package hello
+package k8s
 
 import (
-	"mgpanel/api/hello"
+	"context"
+
+	"mgpanel/api/k8s/v1"
 )
 
-type ControllerV1 struct{}
-
-func NewV1() hello.IHelloV1 {
-	return &ControllerV1{}
+type IK8SV1 interface {
+	CreateDp(ctx context.Context, req *v1.CreateDpReq) (res *v1.CreateDpRes, err error)
 }
