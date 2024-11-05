@@ -12,7 +12,7 @@ func TestTemplateGeneration(t *testing.T) {
 		InstanceType: "t2.micro",
 		AmiID:        "ami-0866a3c8686eaeeba",
 		VolumeSize:   8,
-		VolumeType:   "gps",
+		VolumeType:   "gp3",
 		InstanceName: "MyEC2Instance",
 		Istanceid:    "i-088b668cc6ed86f45",
 	}

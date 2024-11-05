@@ -47,8 +47,14 @@ func (c *AwsEc2Create) CreateEC2() error {
 	if err != nil {
 		glog.New().Error(gctx.New(), "tf客户端创建失败")
 	}
-	if err := tf.Apply(context.Background(), tfexec.Target("aws_instance.web_server")); err != nil {
-		fmt.Printf("Failed to apply Terraform configuration for target resource: %v\n", err)
+	//if err := tf.Apply(context.Background(), tfexec.Target("aws_instance.web_server")); err != nil {
+	//	fmt.Printf("Failed to apply Terraform configuration for target resource: %v\n", err)
+	//	return err
+	//}
+	//return nil
+	// 执行 apply 操作（去掉 Target 参数）
+	if err := tf.Apply(context.Background()); err != nil {
+		fmt.Printf("Failed to apply Terraform configuration: %v\n", err)
 		return err
 	}
 	return nil

@@ -11,6 +11,7 @@ import (
 
 // 初始化terr
 func init() {
+	glog.New().Info(gctx.New(), "正在初始化,terrform init....")
 	// 设置 Terraform 路径和工作目录
 	tf, err := tfexec.NewTerraform(WorkDir, "terraform")
 	if err != nil {

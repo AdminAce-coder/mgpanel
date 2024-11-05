@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: createc2job
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app: createc2job
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: example-task
+          image: registry.cn-chengdu.aliyuncs.com/aliyunzzzxb/hashicorp:latest
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c", "terraform init && terraform apply -auto-approve"]
+          volumeMounts:
+            - mountPath: /app/main.tf
+              subPath: main.tf
+              name: terraform-config-volume
+      volumes:
+        - name: terraform-config-volume
+          configMap:
+            name: terraform-config
