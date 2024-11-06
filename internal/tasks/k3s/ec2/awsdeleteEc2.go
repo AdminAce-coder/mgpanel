@@ -15,11 +15,12 @@ type AwsEc2Delete struct {
 	Ctx        context.Context
 }
 
-func (d *AwsEc2Delete) Deleteec2() error {
+func (d *AwsEc2Delete) DeleteEc2() error {
 	clinet, _ := NewClient(d.Ctx, d.Region)
 	input := &ec2.TerminateInstancesInput{
 		InstanceIds: d.Instanceid,
 	}
+	glog.New().Info(d.Ctx, "正在终止实例....", input.InstanceIds)
 	result, err := clinet.EC2Client.TerminateInstances(d.Ctx, input)
 	if err != nil {
 		glog.New().Error(d.Ctx, "无法终止 EC2 实例: ", err.Error())
